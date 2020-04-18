@@ -27,28 +27,25 @@ public abstract class Empleado {
     }
 
     public void addDocumento(Documento ad){
-        String nu="";
-        String no="";
-        no=getNombre();
-        nu=JOptionPane.showInputDialog(null,"bienvenido " +no+ " ingrese su numero " +
-                "de documento: ");
+        String num="";
+        String nom="";
+        nom=JOptionPane.showInputDialog(null,"Bienvenido, ingrese su tipo de documento: ");
+        num=JOptionPane.showInputDialog(null,"Bienvenido, ingrese su numero de " + nom + " :");
 
-        ad = new Documento(no, nu);
+        ad = new Documento(nom, num);
         documentos.add(ad);
     }
 
-    public void removeDocumento(String rem){
-        String nu;
-        String no;
-        no=getNombre();
-        nu=JOptionPane.showInputDialog(null,"bienvenido " +no+ " ingrese su numero de " +
-                "documento que desea eliminar: ");
+    public void removeDocumento(String rem) {
 
-        rem = nu;
+        rem = JOptionPane.showInputDialog(null, "Bienvenido, ingrese su numero de documento:");
 
+        for (Documento s : documentos) {
+            if(s.getNúmero()== rem){
+                documentos.remove(s);
+            }
+        }
     }
-
-
 
     public double getSalario() {
         return salario;
@@ -68,3 +65,4 @@ public abstract class Empleado {
                 '}';
     }
 }
+
