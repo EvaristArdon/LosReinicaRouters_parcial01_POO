@@ -9,6 +9,7 @@ public abstract class Empleado {
     protected ArrayList<Documento> documentos = new ArrayList();
     protected double salario;
 
+
     public Empleado(String nombre, String puesto, double salario) {
         this.nombre = nombre;
         this.puesto = puesto;
@@ -27,24 +28,11 @@ public abstract class Empleado {
     }
 
     public void addDocumento(Documento ad){
-        String num="";
-        String nom="";
-        nom=JOptionPane.showInputDialog(null,"Bienvenido, ingrese su tipo de documento: ");
-        num=JOptionPane.showInputDialog(null,"Bienvenido, ingrese su numero de " + nom + " :");
 
-        ad = new Documento(nom, num);
-        documentos.add(ad);
     }
 
     public void removeDocumento(String rem) {
 
-        rem = JOptionPane.showInputDialog(null, "Ingrese número de documento a remover de la lista: ");
-
-        for (Documento s : documentos) {
-            if(s.getNúmero()== rem){
-                documentos.remove(s);
-            }
-        }
     }
 
     public double getSalario() {
