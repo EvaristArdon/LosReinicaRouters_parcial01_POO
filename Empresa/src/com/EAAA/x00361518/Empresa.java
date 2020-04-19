@@ -17,7 +17,8 @@ import java.util.ArrayList;
         public ArrayList<Empleado> getPlanilla() { return planilla; }
 
         public void addEmpleado(Empleado a){
-            String nomb = "", pues = "";
+            String nomb = "";
+            String pues = "";
             double sala = 0;
 
             nomb = JOptionPane.showInputDialog(null,"Bienvenido, ingrese su nombre: ");
@@ -25,10 +26,17 @@ import java.util.ArrayList;
                     " de puesto (Plaza fija o Servicio profesional): ");
             sala= Double.parseDouble(JOptionPane.showInputDialog(null,"Ingrese su salario: "));
 
-            a = new Empleado(nomb, pues, sala) {
-            };
-            planilla.add(a);
+            if(pues.equalsIgnoreCase("Plaza fija")){
+                int MesesContrato=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese sus meses de contrato: "));
+                a = new ServicioProfesional(nomb, pues, sala, MesesContrato){};
+                planilla.add(a);
+            }else if(pues.equalsIgnoreCase("Servicio profesional")){
+                int extension=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese su número telefónico de su oficina: "));
+                a = new PlazaFija(nomb,pues, sala, extension);
+                planilla.add(a);
+            }
         }
+        
         public void quitEmpleado(String quitar){
 
             quitar = JOptionPane.showInputDialog(null, "Ingrese el nombre del empleado que será despedido: ");
