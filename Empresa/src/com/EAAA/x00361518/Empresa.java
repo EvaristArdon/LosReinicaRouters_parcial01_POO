@@ -26,11 +26,11 @@ import java.util.ArrayList;
                     " de puesto (Plaza fija o Servicio profesional): ");
             sala= Double.parseDouble(JOptionPane.showInputDialog(null,"Ingrese su salario: "));
 
-            if(pues.equalsIgnoreCase("Plaza fija")){
+            if(pues.equalsIgnoreCase("Servicio profesional")){
                 int MesesContrato=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese sus meses de contrato: "));
                 a = new ServicioProfesional(nomb, pues, sala, MesesContrato){};
                 planilla.add(a);
-            }else if(pues.equalsIgnoreCase("Servicio profesional")){
+            }else if(pues.equalsIgnoreCase("Plaza fija")){
                 int extension=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese su número telefónico de su oficina: "));
                 a = new PlazaFija(nomb,pues, sala, extension);
                 planilla.add(a);

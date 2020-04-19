@@ -23,9 +23,24 @@ public class Main {
             switch (op){
                 case 1:
 
+                    break;
+                case 2:
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+
+                    break;
+                case 5:
+                    JOptionPane.showMessageDialog(null, CalculadoraImpuestos.mostrarTotales());
+                    break;
+
+
             }
 
         }while (op != 0);
 
     }
+
 }
