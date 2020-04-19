@@ -16,13 +16,47 @@ import java.util.ArrayList;
 
         public ArrayList<Empleado> getPlanilla() { return planilla; }
 
-        public void addEmpleado(Empleado a){
-
+        public void addEmpleado(Empleado a) throws AlreadyExistEmployeeNameException{
+            try{
+                //Se recorre la lista para ver si el empleado no existe previamente en la lista
+                boolean siesta = false;
+                for(Empleado b: planilla){
+                    if (b.getNombre().equalsIgnoreCase(a.getNombre())) {
+                        siesta = true;
+                        if (siesta==true){
+                            throw new AlreadyExistEmployeeNameException("¡Lo sentimos! Ese nombre ya esta agregado en la" +
+                                    " lista de empleados.");
+                        } else {
+                            planilla.add(b);
+                        }
+                    }
+                }
+            }catch (AlreadyExistEmployeeNameException ex){
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
         }
         
-        public void quitEmpleado(String quitar){
+        public void removeEmpleado(String quitar) throws NotExistNameEmployeeException {
+            try{
+                //Se recorre la lista para ver si el empleado existe y asi eliminarlo
+                Empleado s = null;
+                for(Empleado a: planilla){
+                    if(a.getNombre().equalsIgnoreCase(quitar))
+                        s=a;
+                }
+                    if(s != null){
+                        planilla.remove(s);
+                    }else
+                        throw new NotExistNameEmployeeException("¡Lo sentimos! No existe el nombre del empleado a despedir.");
 
+                }catch(NotExistNameEmployeeException ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+
+            }catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
         }
+
 
         @Override
         public String toString() {

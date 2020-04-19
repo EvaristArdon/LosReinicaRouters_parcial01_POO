@@ -27,13 +27,48 @@ public abstract class Empleado {
         return documentos;
     }
 
-    public void addDocumento(Documento ad){
-
+    public void addDocumento(Documento ad) throws AlreadyExistNumberDocumentException{
+        try{
+            boolean siesta = false;
+            //Se recorre la lista para ver si el documento no existe previamente en la lista
+            for(Documento b: documentos){
+                if (b.getNúmero().equalsIgnoreCase(ad.getNúmero())) {
+                    siesta = true;
+                    if (siesta==true){
+                        throw new AlreadyExistNumberDocumentException("¡Lo sentimos! Ese documento ya esta agregado en la" +
+                                " lista.");
+                    } else {
+                        documentos.add(b);
+                    }
+                }
+            }
+        }catch (AlreadyExistNumberDocumentException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }
 
-    public void removeDocumento(String rem) {
+    public void removeDocumento(String rem) throws NotExistNumbreDocumentException{
+        try{
+            Documento s = null;
+            //Se recorre la lista para ver si el documento existe por medio del número y asi poder eliminarlo
+            for(Documento a: documentos){
+                if(a.getNúmero().equalsIgnoreCase(rem))
+                    s=a;
+            }
+            if(s != null){
+                documentos.remove(s);
+            }else
+                throw new NotExistNumbreDocumentException("¡Lo sentimos! No existe el documento del empleado.");
 
+        }catch(NotExistNumbreDocumentException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }
+
+
 
     public double getSalario() {
         return salario;
