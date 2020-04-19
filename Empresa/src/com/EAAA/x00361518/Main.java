@@ -7,6 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
         Empresa empresa= new Empresa(nombreEmpresa());
+
         ArrayList<Empleado> planillaAux = new ArrayList();
         ArrayList<Documento> documentoAux =new ArrayList();
 
@@ -28,12 +29,19 @@ public class Main {
                     documentoAux.add(addDocumento());
                     break;
                 case 2:
-
+                    removeEmpleado(planillaAux);
+                    removeDocumento(documentoAux);
                     break;
                 case 3:
-
+                    mostrarEmpleados(planillaAux,documentoAux);
                     break;
                 case 4:
+                    for (Empleado Pago: planillaAux
+                         ) {
+                        JOptionPane.showMessageDialog(null, "Bienvenido "+ Pago.getNombre()+
+                                ", en la siguiente pagina se le dara detalle de su sueldo...");
+                        CalculadoraImpuestos.calcularPago(Pago);
+                    }
 
                     break;
                 case 5:
@@ -46,6 +54,7 @@ public class Main {
         }while (op != 0);
 
     }
+
 static String nombreEmpresa(){
         String nombre;
         nombre=JOptionPane.showInputDialog(null, "Bienvenido, introduce el nombre de " +
@@ -70,11 +79,11 @@ static Documento addDocumento(){
         pues=JOptionPane.showInputDialog(null,"Bienvenido " + nomb +  " , ingrese su puesto de trabajo: ");
         sala= Double.parseDouble(JOptionPane.showInputDialog(null,"Ingrese su salario: "));
 
-        String[]opciones={"​Servicio Profesional​","​Plaza Fija​"};
+        String[] opciones ={ "Servicio Profesional" , "Plaza Fija" };
         int aux =JOptionPane.showOptionDialog(null,"​Tipo de trabajador​",
                 "​Agregar empleado​",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,
                 null,opciones,opciones[0]);
-        if(opciontipo==1){
+        if(aux==0){
             int MesesContrato=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese sus meses de contrato: "));
             return new ServicioProfesional(nomb, pues, sala, MesesContrato);
 
@@ -102,7 +111,23 @@ static Documento addDocumento(){
             return doc.getNombre()== rem;
         });
     }
+    static void mostrarEmpleados(ArrayList<Empleado> plantillaAux, ArrayList<Documento>documentoAux){
+        for (Empleado x: plantillaAux
+             ) {
+            String mostrar ="Nombre: "+x.getNombre()+
+                    "\nPuesto: "+x.getPuesto()+
+                    "\nSalario: "+x.getSalario();
+            if(x instanceof ServicioProfesional)
+                mostrar += "\nMeses de contrato: "+((ServicioProfesional)x).getMesesContrato();
+            else if (x instanceof PlazaFija)
+                mostrar += "\nExtension: "+ ((PlazaFija)x).getExtensión();
+            for (Documento doc: documentoAux
+                 ) {
+                mostrar += "\nNombre del Documento: "+ doc.getNombre();
+                mostrar += "\nNumero de identificacion: "+ doc.getNúmero();
 
-
-
+            }
+            JOptionPane.showMessageDialog(null,mostrar);
+        }
+    }
 }

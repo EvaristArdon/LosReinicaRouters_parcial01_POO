@@ -22,13 +22,6 @@ import java.util.ArrayList;
         
         public void quitEmpleado(String quitar){
 
-            quitar = JOptionPane.showInputDialog(null, "Ingrese el nombre del empleado que será despedido: ");
-
-            for(Empleado s: planilla){
-                if(s.getNombre().equalsIgnoreCase(quitar)){
-                    planilla.remove(s);
-                }
-            }
         }
 
         @Override

@@ -33,13 +33,6 @@ public abstract class Empleado {
 
     public void removeDocumento(String rem) {
 
-        rem = JOptionPane.showInputDialog(null, "Ingrese número de documento a remover de la lista: ");
-
-        for (Documento s : documentos) {
-            if(s.getNúmero()== rem){
-                documentos.remove(s);
-            }
-        }
     }
 
     public double getSalario() {
