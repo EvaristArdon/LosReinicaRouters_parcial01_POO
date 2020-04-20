@@ -17,9 +17,9 @@ import java.util.ArrayList;
         public ArrayList<Empleado> getPlanilla() { return planilla; }
 
         public void addEmpleado(Empleado a){
-
+            planilla.add(a);
         }
-        
+
         public void quitEmpleado(String quitar){
 
         }

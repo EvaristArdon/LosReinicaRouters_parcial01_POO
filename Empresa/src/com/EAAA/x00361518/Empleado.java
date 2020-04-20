@@ -28,10 +28,12 @@ public abstract class Empleado {
     }
 
     public void addDocumento(Documento ad){
-
+        documentos.add(ad);
     }
 
-    public void removeDocumento(String rem) {
+    public void removeDocumento(String d){
+        String dFinal=d;
+        documentos.removeIf(s-> s.getNombre().equals(dFinal));
 
     }
 

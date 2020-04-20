@@ -6,8 +6,6 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        Empresa empresa= new Empresa(nombreEmpresa());
-
         ArrayList<Empleado> planillaAux = new ArrayList();
         ArrayList<Documento> documentoAux =new ArrayList();
 
@@ -16,42 +14,103 @@ public class Main {
                 "3) Ver lista de empleados\n" +
                 "4) Calcular sueldo\n" +
                 "5) Mostrar totales\n" +
-                "0) Salir\t";
+                "6) Salir\t";
 
-        byte op = 0;
+        byte op ,  op2;
+
+        String name=nombreEmpresa();
+            try {
+                if (name.equals("")) throw new NonInputException("No ingresate ningun dato... ");
+
+
+            }
+            catch (NonInputException ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
 
         do {
             op=Byte.parseByte(JOptionPane.showInputDialog(null,menu));
 
-            switch (op){
+            switch (op) {
                 case 1:
                     planillaAux.add(addEmpleado());
                     documentoAux.add(addDocumento());
                     break;
                 case 2:
-                    removeEmpleado(planillaAux);
-                    removeDocumento(documentoAux);
+                    try {
+                        if (planillaAux.isEmpty() )
+                            throw new EmptyListException("Por el momento, no se ha contrado ningun empleado.");
+
+                            try {
+
+                                boolean exist=false;
+                                String nombre = JOptionPane.showInputDialog(null, "Ingrese el empleado a despedir");
+                                if (nombre.equals(""))
+                                    throw new NonInputException("No ingresate ningun dato... ");
+
+
+                                for (Empleado ex : planillaAux)
+                                    if (ex.getNombre().equals(nombre)) {
+                                        exist = true;
+                                        break;
+                                    }
+                                JOptionPane.showMessageDialog(null, "El empleado solicitado" +
+                                        " fue despedido.");
+
+                                if (!exist)
+                                    throw new NotExistNameEmployeeException("El empleado ingresado no existe.");
+
+                                planillaAux.removeIf(obj-> obj.getNombre().equals(nombre));
+
+                                documentoAux.removeIf(obj-> obj.getNúmero().equals(nombre));
+
+
+                            } catch (NonInputException | NotExistNameEmployeeException ex) {
+                                JOptionPane.showMessageDialog(null, ex);}
+                    }
+                    catch (EmptyListException ex) {
+                        JOptionPane.showMessageDialog(null, ex);
+                    }
                     break;
+
                 case 3:
-                    mostrarEmpleados(planillaAux,documentoAux);
+                    try{
+                        if(planillaAux.isEmpty())
+                            throw new EmptyListException("Por el momento, no se ha contrado ningun empleado.");
+                        mostrarEmpleados(planillaAux,documentoAux);}
+                    catch(EmptyListException ex) {
+                        JOptionPane.showMessageDialog(null, ex);
+                    }
+
                     break;
                 case 4:
-                    for (Empleado Pago: planillaAux
-                         ) {
-                        JOptionPane.showMessageDialog(null, "Bienvenido "+ Pago.getNombre()+
-                                ", en la siguiente pagina se le dara detalle de su sueldo...");
-                        CalculadoraImpuestos.calcularPago(Pago);
+                    try{
+                        if(planillaAux.isEmpty())
+                            throw new EmptyListException("Por el momento, no se ha contrado ningun empleado.");
+
+                        for (Empleado Pago: planillaAux
+                        ) {
+                            JOptionPane.showMessageDialog(null, "Bienvenido "+ Pago.getNombre()+
+                                    ", en la siguiente pagina se le dara detalle de su sueldo...");
+                            CalculadoraImpuestos.calcularPago(Pago);
+                        }
                     }
+                    catch(EmptyListException ex) {
+                        JOptionPane.showMessageDialog(null, ex);
+                    }
+
 
                     break;
                 case 5:
                     JOptionPane.showMessageDialog(null, CalculadoraImpuestos.mostrarTotales());
                     break;
+                default :
+                    JOptionPane.showMessageDialog(null, "Opción ingresada erronea.");
 
 
             }
 
-        }while (op != 0);
+        }while (op != 6);
 
     }
 
@@ -62,22 +121,42 @@ static String nombreEmpresa(){
         return nombre;
 }
 static Documento addDocumento(){
-    String num="";
-    String nom="";
-    nom=JOptionPane.showInputDialog(null,"Bienvenido, ingrese su tipo de documento: ");
-    num=JOptionPane.showInputDialog(null,"Bienvenido, ingrese su numero de " + nom + " :");
-    return new Documento(nom,num);
+
+    String num;
+    String nom;
+    Documento  Return=null;
+
+    try{
+
+
+
+        nom=JOptionPane.showInputDialog(null,"Bienvenido, ingrese su tipo de documento: ");
+        num=JOptionPane.showInputDialog(null,"Bienvenido, ingrese su numero de " + nom + " :");
+        if (num.equals(""))
+            throw new NonInputException("No ingresate ningun dato... ");
+
+        Return= new Documento(nom,num);
+        }
+        catch(NonInputException  ex) {
+        JOptionPane.showMessageDialog(null, ex);
+        }
+return Return;
 }
     static Empleado addEmpleado(){
-        String nomb = "";
-        String pues = "";
-        double sala = 0;
-        byte opciontipo=0;
-        Empleado tipo;
+        String nomb;
+        String pues;
+        double sala;
+        Empleado Return=null;
+
+
+        try{
 
         nomb = JOptionPane.showInputDialog(null,"Bienvenido, ingrese su nombre: ");
         pues=JOptionPane.showInputDialog(null,"Bienvenido " + nomb +  " , ingrese su puesto de trabajo: ");
         sala= Double.parseDouble(JOptionPane.showInputDialog(null,"Ingrese su salario: "));
+
+            if (nomb.equals(""))
+                throw new NonInputException("No ingresate ningun dato... ");
 
         String[] opciones ={ "Servicio Profesional" , "Plaza Fija" };
         int aux =JOptionPane.showOptionDialog(null,"​Tipo de trabajador​",
@@ -85,32 +164,21 @@ static Documento addDocumento(){
                 null,opciones,opciones[0]);
         if(aux==0){
             int MesesContrato=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese sus meses de contrato: "));
-            return new ServicioProfesional(nomb, pues, sala, MesesContrato);
+            Return =new ServicioProfesional(nomb, pues, sala, MesesContrato);
 
         }else {
             int extension=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese su número telefónico de su oficina: "));
-            return new PlazaFija(nomb,pues, sala, extension);
+            Return = new PlazaFija(nomb,pues, sala, extension);
         }
+        }
+        catch(NonInputException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return Return;
 
     }
-    static void removeDocumento(ArrayList<Documento> documentoAux){
 
-        String rem = JOptionPane.showInputDialog(null, "Ingrese número de documento a remover: ");
 
-        documentoAux.removeIf((doc)->{
-            JOptionPane.showMessageDialog(null,"Se elimino el documento correctamente.");
-        return doc.getNúmero()== rem;
-        });
-    }
-    static void removeEmpleado(ArrayList<Empleado> planillaAux){
-
-        String rem = JOptionPane.showInputDialog(null, "Ingrese nombre del empleado a despedir de la empresa: ");
-
-        planillaAux.removeIf((doc)->{
-            JOptionPane.showMessageDialog(null,"Se despidio al empleado satisfactoriamente.");
-            return doc.getNombre()== rem;
-        });
-    }
     static void mostrarEmpleados(ArrayList<Empleado> plantillaAux, ArrayList<Documento>documentoAux){
         for (Empleado x: plantillaAux
              ) {
